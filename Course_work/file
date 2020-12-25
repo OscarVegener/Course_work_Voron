@@ -1,0 +1,33 @@
+{
+    "value0": {
+        "value0": [
+            {
+                "value0": 1,
+                "value1": 1,
+                "value2": 1,
+                "value3": [
+                    {
+                        "value0": {
+                            "value0": "Surname",
+                            "value1": "Name",
+                            "value2": {
+                                "value0": 2020,
+                                "value1": 1,
+                                "value2": 3
+                            },
+                            "value3": {
+                                "value0": 2001,
+                                "value1": 10,
+                                "value2": 3
+                            },
+                            "value4": 0.03
+                        },
+                        "value1": 228,
+                        "value2": 300.0,
+                        "value3": 3.21
+                    }
+                ]
+            }
+        ]
+    }
+}
