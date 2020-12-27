@@ -9,6 +9,13 @@ class OperationDay :
 public:
     OperationDay();
 
+    OperationDay(const OperationDay& od) : Date(od){
+        arr = od.getDepositVector();
+    }
+
+    OperationDay(const Date& d) : Date(d) {
+    }
+
     void addOperation(const Deposit& op);
 
     template<class Archive>

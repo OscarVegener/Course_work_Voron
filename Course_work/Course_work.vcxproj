@@ -143,6 +143,7 @@
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Deposit.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MenuController.cpp" />
     <ClCompile Include="OperationDay.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="WeekdaySummary.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Deposit.h" />
+    <ClInclude Include="MenuController.h" />
     <ClInclude Include="OperationDay.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="WeekdaySummary.h" />

@@ -6,15 +6,9 @@ class Date
 public:
 	int getYear() const;
 
-	void setYear(int year);
-
 	int getMonth() const;
 
-	void setMonth(int month);
-
 	int getDay() const;
-
-	void setDay(int day);
 
 	void setDate(int year, int month, int day);
 
@@ -33,9 +27,48 @@ public:
 		archive(year, month, day);
 	}
 
+private:
+	void setYear(int year);
+
+	void setMonth(int month);
+
+	void setDay(int day);
+
 protected:
 	int year = 1;
 	int month = 1;
 	int day = 1;
 };
 
+inline const int operator - (Date d1, Date d2) {
+	return d1.getYear() * 365 + int(d1.getMonth() * 30.417) + d1.getDay() - d2.getYear() * 366 - int(d2.getMonth() * 30.417) - d2.getDay();
+}
+
+inline const bool operator == (Date d1, Date d2) {
+	if (d1.getYear() == d2.getYear() && d1.getMonth() == d2.getMonth() && d1.getDay() == d2.getDay()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+inline const Date& operator ++ (Date& d) {
+	int day = d.getDay() + 1;
+	int year = d.getYear();
+	int month = d.getMonth();
+	if (day > 31) {
+		month++;
+		day = 1;
+		if (month > 12) {
+			year++;
+			month = 1;
+			d.setDate(year, month, day);
+			return d;
+		}
+		d.setDate(year, month, day);
+		return d;
+	}
+	d.setDate(year, month, day);
+	return d;
+}
