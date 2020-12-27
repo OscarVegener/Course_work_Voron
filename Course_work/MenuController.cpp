@@ -41,6 +41,7 @@ int MenuController::menu()
         }
         catch (std::exception e) {
             printf_s(e.what());
+            system("pause");
         }
     }
     return 0;
@@ -48,18 +49,41 @@ int MenuController::menu()
 
 void MenuController::loadFile()
 {
-
+    system("cls");
+    printf_s("\nLoading file.\nEnter corresponding number to start actions."
+        "\n1) Load from JSON file;"
+        "\n2) Load from binary file;"
+        "\n*) Enter any number to cancel.\n");
+    int action;
+    string filename;
+    cout << "Enter number: ";
+    cin >> action;
+    switch (action) {
+    case 1:
+        cout << "Please enter filename: ";
+        cin >> filename;
+        loadFromJSONFile(filename);
+        break;
+    case 2:
+        cout << "Please enter filename: ";
+        cin >> filename;
+        loadFromBinaryFile(filename);
+        break;
+    default:
+        return;
+    }
 }
 
 void MenuController::saveFile()
 {
     system("cls");
     printf_s("\nSaving file.\nEnter corresponding number to start actions."
-        "1) \nSave to JSON file;"
-        "2) \nSave to binary file;"
-        "*) \nEnter any number to cancel.");
+        "\n1) Save to JSON file;"
+        "\n2) Save to binary file;"
+        "\n*) Enter any number to cancel.\n");
     int action;
     string filename;
+    cout << "Enter number: ";
     cin >> action;
     switch (action) {
     case 1:
@@ -77,32 +101,64 @@ void MenuController::saveFile()
     }
 }
 
-void MenuController::saveToBinaryFile(const string& filePath)
+void MenuController::loadFromBinaryFile(const string& filePath)
 {
     fstream fs;
-    fs.open(filePath, ios::binary);
+    fs.open(filePath, ios::binary | ios::in);
     if (fs.is_open()) {
-        cereal::BinaryOutputArchive oarchive(fs);
-        oarchive(arr);
-        printf_s("\nThe data has been saved to file %s", filePath.c_str());
+        cereal::BinaryInputArchive iarchive(fs);
+        iarchive(arr);
+        printf_s("\nThe data has been loaded from file %s\n", filePath.c_str());
     }
     else {
-        printf_s("\nThe file can't be opened. Check filename");
+        printf_s("\nThe file can't be opened. Check filename\n");
     }
+    system("pause");
+}
+
+void MenuController::loadFromJSONFile(const string& filePath)
+{
+    ifstream is;
+    is.open(filePath, ios::in);
+    if (is.is_open()) {
+        cereal::JSONInputArchive iarchive(is);
+        iarchive(arr);
+        printf_s("\nThe data has been loaded from file %s\n", filePath.c_str());
+    }
+    else {
+        printf_s("\nThe file can't be opened. Check filename\n");
+    }
+    system("pause");
+}
+
+void MenuController::saveToBinaryFile(const string& filePath)
+{
+    ofstream os;
+    os.open(filePath, ios::binary | ios::out);
+    if (os.is_open()) {
+        cereal::BinaryOutputArchive oarchive(os);
+        oarchive(arr);
+        printf_s("\nThe data has been saved to file %s\n", filePath.c_str());
+    }
+    else {
+        printf_s("\nThe file can't be opened. Check filename\n");
+    }
+    system("pause");
 }
 
 void MenuController::saveToJSONFile(const string& filePath)
 {
     ofstream os;
-    os.open(filePath, ios::binary);
+    os.open(filePath, ios::out | ios::trunc);
     if (os.is_open()) {
         cereal::JSONOutputArchive oarchive(os);
         oarchive(arr);
-        printf_s("\nThe data has been saved to file %s", filePath.c_str());
+        printf_s("\nThe data has been saved to file %s\n", filePath.c_str());
     }
     else {
-        printf_s("\nThe file can't be opened. Check filename");
+        printf_s("\nThe file can't be opened. Check filename\n");
     }
+    system("pause");
 }
 
 void MenuController::enterNewData()
@@ -185,7 +241,7 @@ void MenuController::addNewDeposit(const Deposit& d, const Date& dt)
     else {
         for (auto it = arr.begin(); it != arr.end(); ++it)
         {
-            if (it->operationDayId((OperationDay)dt) > 0) {
+            if (it->operationDayId((OperationDay)dt) >= 0) {
                 it->addDeposit(d, dt);
                 return;
             }
@@ -201,22 +257,27 @@ void MenuController::printData()
     system("cls");
     for (auto it = arr.begin(); it != arr.end(); ++it)
     {
-        cout << "Weekday summary" << endl;
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+        printf_s("|                                      Weekday summary                                                |\n");
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
         for (auto day_it = it->getOperationDayVector().begin(); day_it != it->getOperationDayVector().end(); ++day_it)
         {
-            cout << "Day " << day_it->getDay() << "." << day_it->getMonth() << "." << day_it->getYear() << endl;
-            cout << "#" << "\tSurname" << "\tName" << "\tBirthday" << "\tFirst Service Day"
-                << "\tDeposit coefficient" << "\t Account number" << "\tSum" << "\tDeposit percent" << endl;
+            printf_s("|                                      Day %2d.%2d.%4d                                                 |\n",
+                day_it->getDay(), day_it->getMonth(), day_it->getYear());
+            printf_s("-------------------------------------------------------------------------------------------------------\n");
+            printf_s("|#  |Surname       |Name        |Birthday   |FSD        |DC     |Account number   |Sum           |DP  |\n");
+            printf_s("-------------------------------------------------------------------------------------------------------\n");
             int i = 1;
             for (auto dep_it = day_it->getDepositVector().begin(); dep_it != day_it->getDepositVector().end(); ++dep_it)
             {
-                cout << i << "\t" << dep_it->getClient().getSurname() << "\t" << dep_it->getClient().getName() << "\t"
-                    << dep_it->getClient().getBirthday().getDay() << "." << dep_it->getClient().getBirthday().getMonth() << "."
-                    << dep_it->getClient().getBirthday().getDay() << "\t"
-                    << dep_it->getClient().getFirstServiceDay().getDay() << "." << dep_it->getClient().getFirstServiceDay().getMonth() << "."
-                    << dep_it->getClient().getFirstServiceDay().getDay() << "\t"
-                    << dep_it->getClient().getDepositIncreaseCoefficient() << "\t" << dep_it->getAccountNumber() << "\t"
-                    << dep_it->getSum() << "\t" << dep_it->getPercent() << endl;
+                printf_s("|%-2d |%-13s |%-11s |%2d.%2d.%4d |%2d.%2d.%4d |%-6.2f |%-16d |%-13.2f |%3.2f|\n", i, dep_it->getClient().getSurname().c_str(), 
+                    dep_it->getClient().getName().c_str(), dep_it->getClient().getBirthday().getDay(),
+                    dep_it->getClient().getBirthday().getMonth(), dep_it->getClient().getBirthday().getYear(),
+                    dep_it->getClient().getFirstServiceDay().getDay(), dep_it->getClient().getFirstServiceDay().getMonth(),
+                    dep_it->getClient().getFirstServiceDay().getYear(), dep_it->getClient().getDepositIncreaseCoefficient(),
+                    dep_it->getAccountNumber(), dep_it->getSum(), dep_it->getPercent());
+                printf_s("-------------------------------------------------------------------------------------------------------\n");
+                ++i;
             }
         }
     }

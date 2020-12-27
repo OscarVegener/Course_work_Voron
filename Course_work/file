@@ -9,22 +9,22 @@
                     "value3": [
                         {
                             "value0": {
-                                "value0": "Vegener",
-                                "value1": "Oscar",
+                                "value0": "surn",
+                                "value1": "nam",
                                 "value2": {
                                     "value0": 2001,
                                     "value1": 10,
-                                    "value2": 18
+                                    "value2": 10
                                 },
                                 "value3": {
                                     "value0": 2015,
-                                    "value1": 3,
-                                    "value2": 9
+                                    "value1": 5,
+                                    "value2": 5
                                 },
-                                "value4": 3.2
+                                "value4": 3.1
                             },
-                            "value1": 324191,
-                            "value2": 4113.0,
+                            "value1": 42131,
+                            "value2": 341.0,
                             "value3": 3.5
                         }
                     ]
@@ -63,73 +63,6 @@
                     "value0": 2021,
                     "value1": 1,
                     "value2": 2,
-                    "value3": []
-                }
-            ]
-        },
-        {
-            "value0": [
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 3,
-                    "value3": [
-                        {
-                            "value0": {
-                                "value0": "LoonySur",
-                                "value1": "Loony",
-                                "value2": {
-                                    "value0": 2001,
-                                    "value1": 10,
-                                    "value2": 10
-                                },
-                                "value3": {
-                                    "value0": 2010,
-                                    "value1": 7,
-                                    "value2": 7
-                                },
-                                "value4": 3.5
-                            },
-                            "value1": 238910290,
-                            "value2": 14278.0,
-                            "value3": 3.8
-                        }
-                    ]
-                },
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 4,
-                    "value3": []
-                },
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 5,
-                    "value3": []
-                },
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 6,
-                    "value3": []
-                },
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 7,
-                    "value3": []
-                },
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 8,
-                    "value3": []
-                },
-                {
-                    "value0": 2020,
-                    "value1": 4,
-                    "value2": 9,
                     "value3": []
                 }
             ]

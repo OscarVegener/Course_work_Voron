@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <iomanip>
 #include "WeekdaySummary.h"
 #include "cereal/archives/binary.hpp"
 #include "cereal/archives/portable_binary.hpp"
@@ -7,17 +8,11 @@
 #include "cereal/cereal.hpp"
 #include "cereal/types/vector.hpp"
 #include "cereal/types/string.hpp"
-#define N 4
 
 class MenuController
 {
 public:
 	int menu();
-
-	template<class Archive>
-	void serialize(Archive& archive) {
-		archive(arr);
-	}
 
 private:
 
@@ -42,8 +37,6 @@ private:
 	void findClient();
 
 	void findDeposit();
-
-	//int arrSize;
 
 	vector<WeekdaySummary> arr;
 
