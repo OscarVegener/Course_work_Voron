@@ -4,7 +4,7 @@ using namespace std;
 int MenuController::menu()
 {
     int action;
-    string filename;
+    string tmp;
     while (true) {
         system("cls");
         printf_s("\nWelcome to main menu!\nEnter corresponding number to start actions.\n"
@@ -13,10 +13,13 @@ int MenuController::menu()
             "3) Save data to file;\n"
             "4) Load data from file;\n"
             "5) Find object;\n"
-            "6) Exit.\n");
+            "6) Mean value of deposit operations\n"
+            "7) Mean value of deposit sums\n"
+            "8) Exit.\n");
         try {
             cout << "Your action: ";
-            cin >> action;
+            cin >> tmp;
+            action = stoi(tmp);
             switch (action) {
             case 1:
                 enterNewData();
@@ -32,15 +35,16 @@ int MenuController::menu()
                 break;
             case 5:
                 break;
-            case 6:
+            case 8:
                 return 0;
             default:
-                printf_s("\nIncorrect number.");
+                printf_s("\nIncorrect number.\n");
                 system("pause");
             }
         }
         catch (std::exception e) {
             printf_s(e.what());
+            printf_s("\n");
             system("pause");
         }
     }
