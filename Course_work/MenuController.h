@@ -34,9 +34,11 @@ private:
 
 	void printData();
 
-	void findClient();
+	void meanSum();
 
-	void findDeposit();
+	void meanOperations();
+
+	void find();
 
 	vector<WeekdaySummary> arr;
 

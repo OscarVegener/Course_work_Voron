@@ -34,6 +34,13 @@ int MenuController::menu()
                 loadFile();
                 break;
             case 5:
+                find();
+                break;
+            case 6:
+                meanOperations();
+                break;
+            case 7:
+                meanSum();
                 break;
             case 8:
                 return 0;
@@ -167,7 +174,7 @@ void MenuController::saveToJSONFile(const string& filePath)
 
 void MenuController::enterNewData()
 {
-    string surname, name;
+    string surname, name, temp;
     int b_year = 1, b_month = 1, b_day = 1, o_year = 1, o_month = 1, o_day = 1,
         d_year = 1, d_month = 1, d_day = 1;
     int acc_number;
@@ -178,17 +185,26 @@ void MenuController::enterNewData()
         printf_s("\nProvide data to add new Deposit\n");
 
         cout << "\nEnter deposit's year, month and day one by one: ";
-        cin >> d_year;
-        cin >> d_month;
-        cin >> d_day;
+        cin >> temp;
+        d_year = stoi(temp);
+        cin >> temp;
+        d_month = stoi(temp);
+        cin >> temp;
+        d_day = stoi(temp);
         cout << "\nEnter client's birthday year, month and day one by one: ";
-        cin >> b_year;
-        cin >> b_month;
-        cin >> b_day;
+        cin >> temp;
+        b_year = stoi(temp);
+        cin >> temp;
+        b_month = stoi(temp);
+        cin >> temp;
+        b_day = stoi(temp);
         cout << "\nEnter client's first service year, month and day one by one: ";
-        cin >> o_year;
-        cin >> o_month;
-        cin >> o_day;
+        cin >> temp;
+        o_year = stoi(temp);
+        cin >> temp;
+        o_month = stoi(temp);
+        cin >> temp;
+        o_day = stoi(temp);
 
         Date birthday(b_year, b_month, b_day);
         Date firstServiceDay(o_year, o_month, o_day);
@@ -202,24 +218,28 @@ void MenuController::enterNewData()
         cout << "\nEnter client's name: ";
         cin >> name;
         cout << "\nEnter deposit increase coefficient: ";
-        cin >> coeff;
+        cin >> temp;
+        coeff = stof(temp);
         enter_num:
         cout << "\nEnter account number: ";
-        cin >> acc_number;
+        cin >> temp;
+        acc_number = stoi(temp);
         if (acc_number < 0) {
             printf_s("\nYou have entered incorrect account number.");
             goto enter_num;
         }
         enter_sum:
         cout << "\nEnter deposit sum: ";
-        cin >> sum;
+        cin >> temp;
+        sum = stof(temp);
         if (sum <= 0) {
             printf_s("\nYou have entered incorrect sum.");
             goto enter_sum;
         }
         enter_percent:
         cout << "\nEnter deposit percent: ";
-        cin >> percent;
+        cin >> temp;
+        percent = stof(temp);
         if (percent < 0 || percent > 100) {
             printf_s("\nYou have entered incorrect deposit percent. \nPercent can't be less than 0 or larger than 100");
             goto enter_percent;
@@ -284,6 +304,98 @@ void MenuController::printData()
                 ++i;
             }
         }
+    }
+    system("pause");
+}
+
+void MenuController::meanSum()
+{
+    system("cls");
+    if (arr.empty()) {
+        printf_s("\nNo information to display.\n");
+        system("pause");
+        return;
+    }
+    printf_s("\nMean sum\n");
+    for (auto it = arr.begin(); it != arr.end() ; ++it)
+    {
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+        printf_s("|                                      Weekday %2d.%2d.%4d - %2d.%2d.%4d                                |\n",
+            it->getOperationDayVector().begin()->getDay(), it->getOperationDayVector().begin()->getMonth(),
+            it->getOperationDayVector().begin()->getYear(), it->getOperationDayVector().back().getDay(),
+            it->getOperationDayVector().back().getMonth(), it->getOperationDayVector().back().getYear());
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+        printf_s("|Mean deposit sum per day: %13.2f                                                              |\n", it->getAverageDepositSumPerDay());
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+    }
+    system("pause");
+}
+
+void MenuController::meanOperations()
+{
+    system("cls");
+    if (arr.empty()) {
+        printf_s("\nNo information to display.\n");
+        system("pause");
+        return;
+    }
+    system("cls");
+    printf_s("\nMean operations\n");
+    for (auto it = arr.begin(); it != arr.end(); ++it)
+    {
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+        printf_s("|                                      Weekday %2d.%2d.%4d - %2d.%2d.%4d                                |\n",
+            it->getOperationDayVector().begin()->getDay(), it->getOperationDayVector().begin()->getMonth(),
+            it->getOperationDayVector().begin()->getYear(), it->getOperationDayVector().back().getDay(),
+            it->getOperationDayVector().back().getMonth(), it->getOperationDayVector().back().getYear());
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+        printf_s("|Mean deposit operations per day: %5f                                                            |\n", it->getAverageOperationsPerDay());
+        printf_s("-------------------------------------------------------------------------------------------------------\n");
+    }
+    system("pause");
+}
+
+void MenuController::find()
+{
+    system("cls");
+    printf_s("\nFind client\n");
+    printf_s("Please enter information about any of client's deposits below.\n");
+    string temp;
+    int acc_number;
+    double sum, percent;
+    try {
+        cout << "Enter deposit account number: ";
+        cin >> temp;
+        acc_number = stof(temp);
+        cout << "Enter deposit sum: ";
+        cin >> temp;
+        sum = stof(temp);
+        cout << "Enter deposit percent: ";
+        cin >> temp;
+        percent = stof(temp);
+        system("cls");
+        printf_s("\nPossible clients\n");
+        for (auto it = arr.begin(); it != arr.end(); ++it)
+        {
+            for (auto day_it = it->getOperationDayVector().begin(); day_it != it->getOperationDayVector().end(); ++day_it)
+            {
+                for (auto dep_it = day_it->getDepositVector().begin(); dep_it != day_it->getDepositVector().end(); ++dep_it)
+                {
+                    if (dep_it->getAccountNumber() == acc_number && (dep_it->getSum() - sum < 0.0001) && (dep_it->getPercent() - percent < 0.0001)) {
+                        Client tmp_client = dep_it->getClient();
+                        printf_s("%s %s %2d.%2d.%4d %2d.%2d.%4d %f\n", tmp_client.getSurname().c_str(), tmp_client.getName().c_str(),
+                            tmp_client.getBirthday().getDay(), tmp_client.getBirthday().getMonth(),
+                            tmp_client.getBirthday().getYear(), tmp_client.getFirstServiceDay().getDay(),
+                            tmp_client.getFirstServiceDay().getMonth(), tmp_client.getFirstServiceDay().getYear(),
+                            tmp_client.getDepositIncreaseCoefficient());
+                    }
+                }
+            }
+        }
+    }
+    catch (std::exception e) {
+        printf_s("\n%s\n", e.what());
+        system("pause");
     }
     system("pause");
 }

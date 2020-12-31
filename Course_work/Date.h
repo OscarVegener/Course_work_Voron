@@ -72,3 +72,4 @@ inline const Date& operator ++ (Date& d) {
 	d.setDate(year, month, day);
 	return d;
 }
+
