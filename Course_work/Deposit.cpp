@@ -13,7 +13,7 @@ double Deposit::getSum() const {
 }
 
 void Deposit::setSum(double sum) {
-	this->sum = sum;
+	sum > 0 ? this->sum = sum : throw std::range_error("Sum can't be less than 0.");
 }
 
 double Deposit::getPercent() const {
