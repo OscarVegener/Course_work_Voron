@@ -31,6 +31,8 @@ public:
 		archive(client, accountNumber, sum, percent);
 	}
 
+	double getStatisticalData() const;
+
 private:
 	Client client;
 	int accountNumber;

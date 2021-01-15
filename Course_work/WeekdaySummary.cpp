@@ -6,7 +6,8 @@ void WeekdaySummary::addOperationDay(const OperationDay& d) {
 		OperationDay tmp = d;
 		for (int i = 1; i < 7; i++)
 		{
-			arr.push_back(++tmp);
+			tmp.addDay();
+			arr.push_back(tmp);
 		}
 	}
 	else {
@@ -45,14 +46,6 @@ const vector<OperationDay>& WeekdaySummary::getOperationDayVector() const {
 	return arr;
 }
 
-double WeekdaySummary::getAverageOperationsPerDay() const {
-	double total_op = 0;
-	for (OperationDay day : arr) {
-		total_op += day.getDepositVector().size();
-	}
-	return total_op / arr.size();
-}
-
 double WeekdaySummary::getAverageDepositSumPerDay() const {
 	double total_sum = 0;
 	for (OperationDay day : arr) {
@@ -61,4 +54,14 @@ double WeekdaySummary::getAverageDepositSumPerDay() const {
 		}
 	}
 	return total_sum / arr.size();
+}
+
+OperationDay& WeekdaySummary::operator[](int const& index)
+{
+	return arr[index];
+}
+
+const OperationDay& WeekdaySummary::operator[](int const& index) const
+{
+	return arr[index];
 }

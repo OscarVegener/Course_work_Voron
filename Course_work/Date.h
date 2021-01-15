@@ -27,6 +27,8 @@ public:
 		archive(year, month, day);
 	}
 
+	void addDay();
+
 private:
 	void setYear(int year);
 
@@ -51,25 +53,5 @@ inline const bool operator == (Date d1, Date d2) {
 	else {
 		return false;
 	}
-}
-
-inline const Date& operator ++ (Date& d) {
-	int day = d.getDay() + 1;
-	int year = d.getYear();
-	int month = d.getMonth();
-	if (day > 31) {
-		month++;
-		day = 1;
-		if (month > 12) {
-			year++;
-			month = 1;
-			d.setDate(year, month, day);
-			return d;
-		}
-		d.setDate(year, month, day);
-		return d;
-	}
-	d.setDate(year, month, day);
-	return d;
 }
 

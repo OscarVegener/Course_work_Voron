@@ -325,7 +325,11 @@ void MenuController::meanSum()
             it->getOperationDayVector().begin()->getYear(), it->getOperationDayVector().back().getDay(),
             it->getOperationDayVector().back().getMonth(), it->getOperationDayVector().back().getYear());
         printf_s("-------------------------------------------------------------------------------------------------------\n");
-        printf_s("|Mean deposit sum per day: %13.2f                                                              |\n", it->getAverageDepositSumPerDay());
+        double mean = 0;
+        for (auto day_it = it->getOperationDayVector().begin(); day_it != it->getOperationDayVector().end(); ++day_it) {
+            mean += getStatistics(day_it->getDepositVector());
+        }
+        printf_s("|Mean deposit sum per day: %13.2f                                                              |\n", mean / 7.0);
         printf_s("-------------------------------------------------------------------------------------------------------\n");
     }
     system("pause");
@@ -349,7 +353,7 @@ void MenuController::meanOperations()
             it->getOperationDayVector().begin()->getYear(), it->getOperationDayVector().back().getDay(),
             it->getOperationDayVector().back().getMonth(), it->getOperationDayVector().back().getYear());
         printf_s("-------------------------------------------------------------------------------------------------------\n");
-        printf_s("|Mean deposit operations per day: %5f                                                            |\n", it->getAverageOperationsPerDay());
+        printf_s("|Mean deposit operations per day: %5f                                                            |\n", getStatistics(it->getOperationDayVector()));
         printf_s("-------------------------------------------------------------------------------------------------------\n");
     }
     system("pause");

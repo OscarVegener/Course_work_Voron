@@ -21,9 +21,11 @@ public:
 
 	const vector<OperationDay>& getOperationDayVector() const;
 
-	double getAverageOperationsPerDay() const;
-
 	double getAverageDepositSumPerDay() const;
+
+	OperationDay& operator[](int const& index);
+
+	const OperationDay& operator[](int const& index) const;
 
 private:
 	vector<OperationDay> arr;

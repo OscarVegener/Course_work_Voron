@@ -48,3 +48,9 @@ Deposit::Deposit(const Deposit& d) {
 	setSum(d.getSum());
 	setPercent(d.getPercent());
 }
+
+double Deposit::getStatisticalData() const
+{
+	// sum
+	return this->getSum();
+}

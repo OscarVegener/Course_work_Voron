@@ -42,5 +42,20 @@ private:
 
 	vector<WeekdaySummary> arr;
 
+	template<class T>
+	double getStatistics(const vector<T>& arr) const;
+
 };
 
+template<class T>
+inline double MenuController::getStatistics(const vector<T>& arr) const
+{
+	if (arr.size() == 0) {
+		return 0.0;
+	}
+	double total = 0;
+	for (T item : arr) {
+		total += item.getStatisticalData();
+	}
+	return total / arr.size();
+}

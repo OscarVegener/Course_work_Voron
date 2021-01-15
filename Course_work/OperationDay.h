@@ -27,6 +27,12 @@ public:
         return arr;
     }
 
+    Deposit& operator[](int const& index);
+
+    const Deposit& operator[](int const& index) const;
+
+    int getStatisticalData() const;
+
 private:
     vector<Deposit> arr;
 };
