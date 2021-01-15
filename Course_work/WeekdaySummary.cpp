@@ -11,6 +11,12 @@ void WeekdaySummary::addOperationDay(const OperationDay& d) {
 		}
 	}
 	else {
+		for (auto it = arr.begin(); it != arr.end(); ++it)
+		{
+			if (*it == d) {
+				return;
+			}
+		}
 		throw std::range_error("There are can't be more than 7 days in a week");
 	}
 }

@@ -21,3 +21,4 @@ int OperationDay::getStatisticalData() const
     // total deposit operations
     return arr.size();
 }
+

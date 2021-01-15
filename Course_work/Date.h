@@ -43,7 +43,7 @@ protected:
 };
 
 inline const int operator - (Date d1, Date d2) {
-	return d1.getYear() * 365 + int(d1.getMonth() * 30.417) + d1.getDay() - d2.getYear() * 366 - int(d2.getMonth() * 30.417) - d2.getDay();
+	return d1.getYear() * 365 + int(d1.getMonth() * 30.417) + d1.getDay() - d2.getYear() * 365 - int(d2.getMonth() * 30.417) - d2.getDay();
 }
 
 inline const bool operator == (Date d1, Date d2) {

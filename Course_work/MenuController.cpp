@@ -63,7 +63,7 @@ void MenuController::loadFile()
     system("cls");
     printf_s("\nLoading file.\nEnter corresponding number to start actions."
         "\n1) Load from JSON file;"
-        "\n2) Load from binary file;"
+        "\n2) Load from txt file;"
         "\n*) Enter any number to cancel.\n");
     int action;
     string filename;
@@ -78,7 +78,7 @@ void MenuController::loadFile()
     case 2:
         cout << "Please enter filename: ";
         cin >> filename;
-        loadFromBinaryFile(filename);
+        loadFromTxtFile(filename);
         break;
     default:
         return;
@@ -90,7 +90,7 @@ void MenuController::saveFile()
     system("cls");
     printf_s("\nSaving file.\nEnter corresponding number to start actions."
         "\n1) Save to JSON file;"
-        "\n2) Save to binary file;"
+        "\n2) Save to txt file;"
         "\n*) Enter any number to cancel.\n");
     int action;
     string filename;
@@ -105,20 +105,106 @@ void MenuController::saveFile()
     case 2:
         cout << "Please enter filename: ";
         cin >> filename;
-        saveToBinaryFile(filename);
+        saveToTxtFile(filename);
         break;
     default:
         return;
     }
 }
 
-void MenuController::loadFromBinaryFile(const string& filePath)
+void MenuController::loadFromTxtFile(const string& filePath)
 {
-    fstream fs;
-    fs.open(filePath, ios::binary | ios::in);
-    if (fs.is_open()) {
-        cereal::BinaryInputArchive iarchive(fs);
-        iarchive(arr);
+    ifstream file(filePath);
+    if (file.is_open()) {
+        int year;
+        int month;
+        int day;
+        int i = 0;
+        string input;
+        arr.push_back(WeekdaySummary());
+        while (getline(file, input)) {
+            if (input == "Start") {
+                OperationDay op_day;
+                Date date;
+                Date birthday;
+                Date first_op_day;
+                Client client;
+                Deposit deposit;
+                int year;
+                int month;
+                int day;
+                getline(file, input);
+                year = stoi(input);
+                getline(file, input);
+                month = stoi(input);
+                getline(file, input);
+                day = stoi(input);
+                date.setDate(year, month, day);
+                op_day.setDate(date);
+
+                arr[0].addOperationDay(op_day);
+
+                int b_year, b_month, b_day;
+                int o_year, o_month, o_day;
+                string surname;
+                string name;
+                double coeff;
+                int accountNumber;
+                double percent;
+                double sum;
+                while (getline(file, input)) {
+                    if (input == "End") {
+                        break;
+                    }
+                    else if (input == "Deposit_start") {
+                        getline(file, input);
+                        b_year = stoi(input);
+                        getline(file, input);
+                        b_month = stoi(input);
+                        getline(file, input);
+                        b_day = stoi(input);
+
+                        getline(file, input);
+                        o_year = stoi(input);
+                        getline(file, input);
+                        o_month = stoi(input);
+                        getline(file, input);
+                        o_day = stoi(input);
+
+                        getline(file, surname);
+                        getline(file, name);
+
+                        getline(file, input);
+                        coeff = stof(input);
+
+                        getline(file, input);
+                        accountNumber = stoi(input);
+                        getline(file, input);
+                        percent = stof(input);
+                        getline(file, input);
+                        sum = stof(input);
+
+                        birthday.setDate(b_year, b_month, b_day);
+                        first_op_day.setDate(o_year, o_month, o_day);
+                        client.setBirthday(birthday);
+                        client.setFirstServiceDay(first_op_day);
+                        client.setSurname(surname);
+                        client.setName(name);
+                        client.setDepositIncreaseCoefficient(coeff);
+
+                        deposit.setClient(client);
+                        deposit.setAccountNumber(accountNumber);
+                        deposit.setPercent(percent);
+                        deposit.setSum(sum);
+
+                        op_day.addOperation(deposit);
+
+                        arr[0].addDeposit(deposit, op_day);
+                    }
+                }
+            }
+        }
+        file.close();
         printf_s("\nThe data has been loaded from file %s\n", filePath.c_str());
     }
     else {
@@ -142,13 +228,64 @@ void MenuController::loadFromJSONFile(const string& filePath)
     system("pause");
 }
 
-void MenuController::saveToBinaryFile(const string& filePath)
+void MenuController::saveToTxtFile(const string& filePath)
 {
-    ofstream os;
-    os.open(filePath, ios::binary | ios::out);
-    if (os.is_open()) {
-        cereal::BinaryOutputArchive oarchive(os);
-        oarchive(arr);
+    ofstream file(filePath, ios::out);
+    if (file.is_open()) {
+        for (auto it = arr.begin(); it != arr.end(); ++it) {
+            for (auto day_it = it->getOperationDayVector().begin(); day_it != it->getOperationDayVector().end(); ++day_it)
+            {
+                string start = "Start";
+                string end = "End";
+                string year = to_string(day_it->getYear());
+                string month = to_string(day_it->getMonth());
+                string day = to_string(day_it->getDay());
+                file << start << endl;
+                file << year << endl;
+                file << month << endl;
+                file << day << endl;
+                for (auto dep_it = day_it->getDepositVector().begin(); dep_it != day_it->getDepositVector().end(); ++dep_it)
+                {
+                    file << "Deposit_start" << endl;
+
+                    string b_year = to_string(dep_it->getClient().getBirthday().getYear());
+                    string b_month = to_string(dep_it->getClient().getBirthday().getMonth());
+                    string b_day = to_string(dep_it->getClient().getBirthday().getDay());
+
+                    string o_year = to_string(dep_it->getClient().getFirstServiceDay().getYear());
+                    string o_month = to_string(dep_it->getClient().getFirstServiceDay().getMonth());
+                    string o_day = to_string(dep_it->getClient().getFirstServiceDay().getDay());
+
+                    string surname = dep_it->getClient().getSurname();
+                    string name = dep_it->getClient().getName();
+
+                    string coeff = to_string(dep_it->getClient().getDepositIncreaseCoefficient());
+
+                    string accountNumber = to_string(dep_it->getAccountNumber());
+                    string percent = to_string(dep_it->getPercent());
+                    string sum = to_string(dep_it->getSum());
+
+                    file << b_year << endl;
+                    file << b_month << endl;
+                    file << b_day << endl;
+
+                    file << o_year << endl;
+                    file << o_month << endl;
+                    file << o_day << endl;
+
+                    file << surname << endl;
+                    file << name << endl;
+
+                    file << coeff << endl;
+
+                    file << accountNumber << endl;
+                    file << percent << endl;
+                    file << sum << endl;
+                }
+                file << end << endl;
+            }
+        }
+        file.close();
         printf_s("\nThe data has been saved to file %s\n", filePath.c_str());
     }
     else {

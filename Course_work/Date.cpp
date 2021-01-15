@@ -26,7 +26,7 @@ void Date::addDay()
 }
 
 void Date::setYear(int year) {
-	year > 0 ? this->year = year : throw std::range_error("The year can't be lesser than 0");
+	year > 1920 && year < 2022 ? this->year = year : throw std::range_error("The year can't be lesser than 0");
 }
 
 int Date::getMonth() const {
