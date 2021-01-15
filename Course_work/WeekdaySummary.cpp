@@ -46,16 +46,6 @@ const vector<OperationDay>& WeekdaySummary::getOperationDayVector() const {
 	return arr;
 }
 
-double WeekdaySummary::getAverageDepositSumPerDay() const {
-	double total_sum = 0;
-	for (OperationDay day : arr) {
-		for (Deposit deposit : day.getDepositVector()) {
-			total_sum += deposit.getSum();
-		}
-	}
-	return total_sum / arr.size();
-}
-
 OperationDay& WeekdaySummary::operator[](int const& index)
 {
 	return arr[index];
